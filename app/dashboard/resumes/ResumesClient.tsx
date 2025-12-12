@@ -25,6 +25,7 @@ export function ResumesClient({ resumes: initialResumes }: ResumesClientProps) {
     const [filterScore, setFilterScore] = useState<"all" | "high" | "medium" | "low">("all");
     const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
     const [togglingFavorite, setTogglingFavorite] = useState<string | null>(null);
+    const [sortBy, setSortBy] = useState<"date" | "score" | "company">("date");
 
     const getScoreBadge = (score: number) => {
         if (score >= 90) return "status-badge success";
@@ -45,7 +46,6 @@ export function ResumesClient({ resumes: initialResumes }: ResumesClientProps) {
             });
 
             if (response.ok) {
-                // Update local state
                 setResumes(resumes.map(r =>
                     r.id === resumeId ? { ...r, isFavorite: !currentStatus } : r
                 ));
@@ -57,9 +57,34 @@ export function ResumesClient({ resumes: initialResumes }: ResumesClientProps) {
         }
     };
 
-    // Filter resumes based on search, score filter, and favorites
-    const filteredResumes = useMemo(() => {
-        return resumes.filter((resume) => {
+    // Get date label for grouping
+    const getDateLabel = (date: Date) => {
+        const resumeDate = new Date(date);
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        // Reset times to midnight for comparison
+        resumeDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+        yesterday.setHours(0, 0, 0, 0);
+
+        if (resumeDate.getTime() === today.getTime()) {
+            return "Today";
+        } else if (resumeDate.getTime() === yesterday.getTime()) {
+            return "Yesterday";
+        } else {
+            return resumeDate.toLocaleDateString('en-US', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+    };
+
+    // Filter and sort resumes
+    const filteredAndSortedResumes = useMemo(() => {
+        let filtered = resumes.filter((resume) => {
             // Favorites filter
             if (showFavoritesOnly && !resume.isFavorite) {
                 return false;
@@ -79,176 +104,259 @@ export function ResumesClient({ resumes: initialResumes }: ResumesClientProps) {
 
             return matchesSearch && matchesScore;
         });
-    }, [resumes, searchQuery, filterScore, showFavoritesOnly]);
 
-    const favoriteCount = resumes.filter(r => r.isFavorite).length;
+        // Sort
+        filtered.sort((a, b) => {
+            if (sortBy === "date") {
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            } else if (sortBy === "score") {
+                return b.matchScore - a.matchScore;
+            } else if (sortBy === "company") {
+                return (a.companyName || "").localeCompare(b.companyName || "");
+            }
+            return 0;
+        });
+
+        return filtered;
+    }, [resumes, searchQuery, filterScore, showFavoritesOnly, sortBy]);
+
+    // Group resumes by date
+    const groupedResumes = useMemo(() => {
+        const groups: { [key: string]: Resume[] } = {};
+
+        filteredAndSortedResumes.forEach(resume => {
+            const label = getDateLabel(new Date(resume.createdAt));
+            if (!groups[label]) {
+                groups[label] = [];
+            }
+            groups[label].push(resume);
+        });
+
+        return groups;
+    }, [filteredAndSortedResumes]);
+
+    const downloadResume = (id: string, filename: string) => {
+        window.open(`/api/resumes/download?id=${id}&filename=${encodeURIComponent(filename)}`, "_blank");
+    };
+
+    const viewResume = (id: string) => {
+        router.push(`/dashboard/resumes/${id}`);
+    };
 
     return (
-        <>
-            {/* Search and Filter Bar */}
-            <div className="flex flex-col md:flex-row gap-4 mb-6">
-                {/* Search Input */}
-                <div className="flex-1 relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <input
-                        type="text"
-                        placeholder="Search by company, role, or filename..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="form-input pl-12 pr-10 w-full"
-                    />
-                    {searchQuery && (
-                        <button
-                            onClick={() => setSearchQuery("")}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-lg transition-colors"
-                        >
-                            <X className="w-4 h-4 text-muted-foreground" />
-                        </button>
-                    )}
-                </div>
-
-                {/* Score Filter */}
-                <div className="flex items-center gap-2">
-                    <Filter className="w-5 h-5 text-muted-foreground" />
-                    <select
-                        value={filterScore}
-                        onChange={(e) => setFilterScore(e.target.value as any)}
-                        className="form-input py-3 px-4 cursor-pointer"
-                    >
-                        <option value="all">All Scores</option>
-                        <option value="high">90%+ (Excellent)</option>
-                        <option value="medium">75-89% (Good)</option>
-                        <option value="low">Below 75%</option>
-                    </select>
-                </div>
-            </div>
-
-            {/* Favorites Toggle */}
-            <div className="flex items-center justify-between mb-6">
-                <button
-                    onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
-                    className={`btn ${showFavoritesOnly ? 'btn-primary' : 'btn-ghost'} gap-2`}
-                >
-                    <Star className={`w-4 h-4 ${showFavoritesOnly ? 'fill-current' : ''}`} />
-                    <span>Favorites Only</span>
-                    {favoriteCount > 0 && (
-                        <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${showFavoritesOnly ? 'bg-white/20' : 'bg-primary/10 text-primary'
-                            }`}>
-                            {favoriteCount}
+        <div className="min-h-screen bg-background p-6">
+            <div className="max-w-7xl mx-auto">
+                {/* Header */}
+                <div className="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 className="text-4xl font-bold text-foreground mb-2">My Resumes</h1>
+                        <p className="text-muted-foreground">View and manage your tailored resumes</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <span className="px-4 py-2 bg-primary/10 text-primary rounded-lg font-bold">
+                            Total Resumes: {resumes.length}
                         </span>
-                    )}
-                </button>
+                    </div>
+                </div>
 
-                {/* Results Count */}
-                {(searchQuery || filterScore !== "all" || showFavoritesOnly) && (
-                    <p className="text-sm text-muted-foreground">
-                        Found <span className="font-bold text-foreground">{filteredResumes.length}</span> of {resumes.length} resumes
-                    </p>
-                )}
-            </div>
-
-            {/* Resumes Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {filteredResumes.map((resume) => (
-                    <div
-                        key={resume.id}
-                        className="card p-6 card-hover group relative"
-                    >
-                        {/* Favorite Star - Top Right */}
-                        <button
-                            onClick={() => toggleFavorite(resume.id, resume.isFavorite)}
-                            disabled={togglingFavorite === resume.id}
-                            className={`absolute top-4 right-4 p-2 rounded-lg transition-all ${resume.isFavorite
-                                ? 'text-yellow-500 hover:text-yellow-600 bg-yellow-500/10'
-                                : 'text-muted-foreground hover:text-yellow-500 hover:bg-yellow-500/10'
-                                } ${togglingFavorite === resume.id ? 'opacity-50 cursor-wait' : ''}`}
-                            title={resume.isFavorite ? "Remove from favorites" : "Add to favorites"}
-                        >
-                            <Star
-                                className={`w-5 h-5 transition-all ${resume.isFavorite ? 'fill-current scale-110' : ''
-                                    } ${togglingFavorite === resume.id ? 'animate-pulse' : ''}`}
+                {/* Search and Filters */}
+                <div className="card p-6 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                        {/* Search */}
+                        <div className="md:col-span-4 relative">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                            <input
+                                type="text"
+                                placeholder="Search by company, role, or filename..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="form-input pl-12 pr-10 w-full"
                             />
-                        </button>
-
-                        {/* Header */}
-                        <div className="flex items-start justify-between mb-4 pr-12">
-                            <div className="flex-1 min-w-0">
-                                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors truncate">
-                                    {resume.jobTitle || "Candidate Application"}
-                                </h3>
-                                <p className="text-sm text-muted-foreground flex items-center gap-2">
-                                    <Briefcase className="w-4 h-4" />
-                                    {resume.companyName || "JobFit Pro"}
-                                </p>
-                            </div>
-                            <div className={getScoreBadge(resume.matchScore)}>
-                                {resume.matchScore}%
-                            </div>
+                            {searchQuery && (
+                                <button
+                                    onClick={() => setSearchQuery("")}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded transition-colors"
+                                >
+                                    <X className="w-4 h-4 text-muted-foreground" />
+                                </button>
+                            )}
                         </div>
 
-                        {/* Meta Info */}
-                        <div className="mb-6 pb-6 border-b border-border space-y-2">
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <Calendar className="w-4 h-4" />
-                                <span className="font-medium">{new Date(resume.createdAt).toLocaleDateString("en-US", {
-                                    month: "short",
-                                    day: "numeric",
-                                    year: "numeric",
-                                })}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                <FileText className="w-4 h-4" />
-                                <span className="truncate font-medium">{resume.originalName}</span>
-                            </div>
-                        </div>
-
-                        {/* Actions */}
-                        <div className="flex items-center gap-3">
-                            <button
-                                disabled
-                                className="btn btn-primary flex-1 gap-2 opacity-50 cursor-not-allowed"
+                        {/* Score Filter */}
+                        <div className="md:col-span-2 flex items-center gap-2">
+                            <Filter className="w-4 h-4 text-muted-foreground hidden md:block" />
+                            <select
+                                value={filterScore}
+                                onChange={(e) => setFilterScore(e.target.value as any)}
+                                className="form-input w-full cursor-pointer"
                             >
-                                <Download className="w-4 h-4" />
-                                Download
-                            </button>
-                            <button className="btn btn-ghost px-4">
-                                <Eye className="w-4 h-4" />
-                            </button>
+                                <option value="all">All Scores</option>
+                                <option value="high">⭐ High (90+)</option>
+                                <option value="medium">📊 Medium (75-89)</option>
+                                <option value="low">📉 Low (&lt;75)</option>
+                            </select>
+                        </div>
+
+                        {/* Sort By */}
+                        <div className="md:col-span-3">
+                            <select
+                                value={sortBy}
+                                onChange={(e) => setSortBy(e.target.value as any)}
+                                className="form-input w-full cursor-pointer"
+                            >
+                                <option value="date">📅 Sort by Date</option>
+                                <option value="score">📊 Sort by Score</option>
+                                <option value="company">🏢 Sort by Company</option>
+                            </select>
+                        </div>
+
+                        {/* Favorites Toggle */}
+                        <div className="md:col-span-3">
+                            <label className="flex items-center gap-2 cursor-pointer p-3 rounded-lg border-2 border-border hover:border-primary transition-colors">
+                                <input
+                                    type="checkbox"
+                                    checked={showFavoritesOnly}
+                                    onChange={(e) => setShowFavoritesOnly(e.target.checked)}
+                                    className="w-4 h-4"
+                                />
+                                <Star className={`w-4 h-4 ${showFavoritesOnly ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`} />
+                                <span className="text-sm font-medium">Favorites Only</span>
+                            </label>
                         </div>
                     </div>
-                ))}
-            </div>
 
-            {/* No Results State */}
-            {filteredResumes.length === 0 && resumes.length > 0 && (
-                <div className="py-20 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-muted rounded-full mb-6">
-                        {showFavoritesOnly ? (
-                            <Star className="w-10 h-10 text-muted-foreground" />
-                        ) : (
-                            <Search className="w-10 h-10 text-muted-foreground" />
+                    {/* Active Filters Summary */}
+                    {(searchQuery || filterScore !== "all" || showFavoritesOnly) && (
+                        <div className="mt-4 pt-4 border-t border-border flex flex-wrap items-center gap-2">
+                            <span className="text-sm text-muted-foreground">
+                                Showing <span className="font-bold text-foreground">{filteredAndSortedResumes.length}</span> of {resumes.length} resumes
+                            </span>
+                            {filterScore !== "all" && (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400 rounded text-xs font-medium">
+                                    Score: {filterScore}
+                                    <button onClick={() => setFilterScore("all")}>
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                </span>
+                            )}
+                            {showFavoritesOnly && (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-400 rounded text-xs font-medium">
+                                    Favorites
+                                    <button onClick={() => setShowFavoritesOnly(false)}>
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                </span>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {/* Grouped Resumes */}
+                {Object.keys(groupedResumes).length === 0 ? (
+                    <div className="card p-12 text-center">
+                        <FileText className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-xl font-bold text-foreground mb-2">No resumes found</h3>
+                        <p className="text-muted-foreground mb-4">
+                            {searchQuery || filterScore !== "all" || showFavoritesOnly
+                                ? "Try adjusting your filters"
+                                : "Generate your first resume to get started"}
+                        </p>
+                        {(searchQuery || filterScore !== "all" || showFavoritesOnly) && (
+                            <button
+                                onClick={() => {
+                                    setSearchQuery("");
+                                    setFilterScore("all");
+                                    setShowFavoritesOnly(false);
+                                }}
+                                className="btn btn-primary"
+                            >
+                                Clear Filters
+                            </button>
                         )}
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground mb-3">
-                        {showFavoritesOnly ? "No favorite resumes yet" : "No resumes found"}
-                    </h3>
-                    <p className="text-muted-foreground text-lg mb-8 max-w-md mx-auto">
-                        {showFavoritesOnly
-                            ? "Star your favorite resumes to quickly find them later"
-                            : "Try adjusting your search or filter criteria"}
-                    </p>
-                    <button
-                        onClick={() => {
-                            setSearchQuery("");
-                            setFilterScore("all");
-                            setShowFavoritesOnly(false);
-                        }}
-                        className="btn btn-ghost"
-                    >
-                        Clear Filters
-                    </button>
-                </div>
-            )}
-        </>
+                ) : (
+                    <div className="space-y-8">
+                        {Object.entries(groupedResumes).map(([dateLabel, dateResumes]) => (
+                            <div key={dateLabel}>
+                                {/* Date Header */}
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/20 to-accent/20 rounded-lg border-l-4 border-primary">
+                                        <Calendar className="w-5 h-5 text-primary" />
+                                        <h2 className="text-lg font-bold text-foreground">{dateLabel}</h2>
+                                        <span className="text-sm text-muted -foreground">({dateResumes.length})</span>
+                                    </div>
+                                    <div className="flex-1 h-px bg-gradient-to-r from-border to-transparent"></div>
+                                </div>
+
+                                {/* Resume Cards */}
+                                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                                    {dateResumes.map((resume) => (
+                                        <div
+                                            key={resume.id}
+                                            className="card p-6 card-hover border-l-4 border-l-primary/50 hover:border-l-primary transition-all relative group"
+                                        >
+                                            {/* Favorite Star */}
+                                            <button
+                                                onClick={() => toggleFavorite(resume.id, resume.isFavorite)}
+                                                disabled={togglingFavorite === resume.id}
+                                                className="absolute top-4 right-4 p-2 hover:bg-muted rounded-lg transition-colors"
+                                            >
+                                                <Star
+                                                    className={`w-5 h-5 ${resume.isFavorite
+                                                        ? 'fill-yellow-400 text-yellow-400'
+                                                        : 'text-muted-foreground hover:text-yellow-400'
+                                                        } ${togglingFavorite === resume.id ? 'animate-spin' : ''}`}
+                                                />
+                                            </button>
+
+                                            {/* Job Title */}
+                                            <h3 className="text-xl font-bold text-foreground mb-2 pr-8">
+                                                {resume.jobTitle || "Untitled Position"}
+                                            </h3>
+
+                                            {/* Company */}
+                                            <div className="flex items-center gap-2 text-muted-foreground mb-3">
+                                                <Briefcase className="w-4 h-4" />
+                                                <span className="font-medium">{resume.companyName || "Unknown Company"}</span>
+                                            </div>
+
+                                            {/* Date */}
+                                            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+                                                <Calendar className="w-4 h-4" />
+                                                <span>{new Date(resume.createdAt).toLocaleDateString()}</span>
+                                            </div>
+
+                                            {/* Score Badge */}
+                                            <div className="mb-4">
+                                                <span className={getScoreBadge(resume.matchScore)}>
+                                                    {resume.matchScore}% Match
+                                                </span>
+                                            </div>
+
+                                            {/* Actions */}
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => downloadResume(resume.id, resume.originalName)}
+                                                    className="btn btn-primary flex-1 px-4 flex items-center justify-center gap-2"
+                                                >
+                                                    <Download className="w-4 h-4" />
+                                                    <span>Download</span>
+                                                </button>
+                                                <button
+                                                    onClick={() => viewResume(resume.id)}
+                                                    className="btn btn-ghost px-4"
+                                                >
+                                                    <Eye className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
     );
 }

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import UserActions from "./UserActions";
 import { logoutAction } from "../actions/auth";
 import { AdminThemeToggle } from "./AdminThemeToggle";
+import RegisteredClientsTable from "./RegisteredClientsTable";
 
 // Force dynamic rendering so it always shows latest data
 export const dynamic = 'force-dynamic';
@@ -131,57 +132,7 @@ export default async function AdminDashboard() {
                 <div className="space-y-8">
 
                     {/* SECTION 1: REGISTERED CLIENTS */}
-                    <div className="card overflow-hidden">
-                        <div className="p-6 border-b border-border flex justify-between items-center bg-muted/30">
-                            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-                                <Users className="w-6 h-6 text-primary" />
-                                Registered Clients
-                            </h2>
-                            <span className="status-badge info">Latest 50</span>
-                        </div>
-                        <div className="overflow-x-auto">
-                            <table className="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Joined Date</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Daily Usage</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {users.length === 0 ? (
-                                        <tr><td colSpan={5} className="text-center text-muted-foreground py-12">No users registered yet.</td></tr>
-                                    ) : users.map(user => (
-                                        <tr key={user.id}>
-                                            <td className="text-muted-foreground font-medium">{new Date(user.createdAt).toLocaleDateString()}</td>
-                                            <td className="font-bold">
-                                                {user.name || "N/A"}<br />
-                                                <span className="text-xs font-normal text-muted-foreground">{user.phone}</span>
-                                            </td>
-                                            <td className="text-primary font-medium">{user.email}</td>
-                                            <td>
-                                                <div className="flex items-center gap-2">
-                                                    <span className={`font-bold ${(user as any).dailyResumeCount >= (user as any).dailyResumeLimit ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
-                                                        {(user as any).dailyResumeCount || 0}
-                                                    </span>
-                                                    <span className="text-muted-foreground">/</span>
-                                                    <span className="text-muted-foreground font-medium">
-                                                        {(user as any).dailyResumeLimit || 70}
-                                                    </span>
-                                                </div>
-                                                <span className="text-xs text-muted-foreground">resumes today</span>
-                                            </td>
-                                            <td>
-                                                <UserActions userId={user.id} status={user.status} />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <RegisteredClientsTable users={users} />
 
                     {/* SECTION 2: RESUME GENERATION LOGS */}
                     <div className="card overflow-hidden">

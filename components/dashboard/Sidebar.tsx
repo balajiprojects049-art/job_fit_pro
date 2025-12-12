@@ -14,6 +14,7 @@ export async function Sidebar() {
             select: {
                 name: true,
                 email: true,
+                profileImage: true,
             },
         });
         user = userData;

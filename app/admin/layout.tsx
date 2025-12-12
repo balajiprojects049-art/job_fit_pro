@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { ToastProvider } from '@/components/ToastProvider';
+import { ConfirmDialogProvider } from '@/components/ConfirmDialog';
 
 export const metadata: Metadata = {
     title: 'Admin Dashboard | JobFit Pro',
@@ -11,8 +13,12 @@ export default function AdminLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="bg-neutral-950 min-h-screen text-white antialiased">
-            {children}
-        </div>
+        <ToastProvider>
+            <ConfirmDialogProvider>
+                <div className="bg-neutral-950 min-h-screen text-white antialiased">
+                    {children}
+                </div>
+            </ConfirmDialogProvider>
+        </ToastProvider>
     );
 }

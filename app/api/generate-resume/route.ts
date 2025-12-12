@@ -224,7 +224,18 @@ Remember: Write natural, professional content without any markdown or special fo
                 userName = user.name || user.email.split('@')[0]; // Use name or email prefix
                 userId = user.id;
 
-                // � CHECK IF IT'S A NEW DAY - Reset daily count
+                // 🔒 CHECK FULL ACCESS - Consultative Service Model
+                if (!(user as any).hasFullAccess) {
+                    return NextResponse.json(
+                        {
+                            error: "Access Restricted",
+                            message: "Your account is approved but doesn't have resume generation access yet. Please send your resume to our WhatsApp: +1 (409) 919-7989. After reviewing your resume, admin will grant you plan access to use all features."
+                        },
+                        { status: 403 }
+                    );
+                }
+
+                // 🔄 CHECK IF IT'S A NEW DAY - Reset daily count
                 const today = new Date();
                 today.setHours(0, 0, 0, 0); // Start of today
 
@@ -252,7 +263,7 @@ Remember: Write natural, professional content without any markdown or special fo
                 }
 
                 // 🛑 MONTHLY LIMIT CHECK
-                const LIMIT = user.plan === "PRO" ? 20 : 5;
+                const LIMIT = user.plan === "PRO" ? 70 : 5;
                 if (user.creditsUsed >= LIMIT) {
                     return NextResponse.json(
                         { error: `You have reached your limit of ${LIMIT} resumes. Please upgrade to Pro.` },

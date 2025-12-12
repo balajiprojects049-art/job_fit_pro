@@ -44,10 +44,12 @@ model User {
   password       String
   name           String?
   phone          String?
-  status         String           @default("PENDING")
+  profileImage   String? // Profile photo URL or base64
+  status         String           @default("PENDING") // PENDING, APPROVED, REJECTED
   
   // Subscription Fields
-  plan                String   @default("FREE") // FREE or PRO
+  plan                String   @default("NONE") // NONE, FREE, PRO
+  hasFullAccess       Boolean  @default(false) // Admin grants this after review
   creditsUsed         Int      @default(0) // Resumes generated this month
   subscriptionExpires DateTime? 
   

@@ -22,6 +22,7 @@ interface SidebarClientProps {
     user: {
         name: string | null;
         email: string;
+        profileImage?: string | null;
     } | null;
 }
 
@@ -40,7 +41,8 @@ export function SidebarClient({ user }: SidebarClientProps) {
         { name: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
         { name: "New Application", icon: PlusCircle, href: "/dashboard/new", highlight: true },
         { name: "My Resumes", icon: FileText, href: "/dashboard/resumes" },
-        { name: "Job Tracker", icon: Briefcase, href: "/dashboard/tracker" },
+        // TEMPORARILY HIDDEN - Will be removed after client confirmation
+        // { name: "Job Tracker", icon: Briefcase, href: "/dashboard/tracker" },
         { name: "History", icon: History, href: "/dashboard/history" },
         { name: "Feedback", icon: MessageSquare, href: "/dashboard/feedback" },
         { name: "Settings", icon: Settings, href: "/dashboard/settings" },
@@ -106,8 +108,16 @@ export function SidebarClient({ user }: SidebarClientProps) {
                 {/* User Info */}
                 {user && (
                     <div className="p-3 rounded-xl bg-muted flex items-center gap-3 border border-border">
-                        <div className="w-9 h-9 rounded-full bg-gradient-primary flex items-center justify-center shadow-md">
-                            <User className="w-5 h-5 text-white" />
+                        <div className="w-9 h-9 rounded-full bg-gradient-primary flex items-center justify-center shadow-md overflow-hidden">
+                            {user.profileImage ? (
+                                <img
+                                    src={user.profileImage}
+                                    alt={user.name || "User"}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <User className="w-5 h-5 text-white" />
+                            )}
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className="text-sm font-semibold text-foreground truncate">

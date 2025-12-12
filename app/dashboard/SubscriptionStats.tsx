@@ -1,18 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { Zap } from "lucide-react";
+import { Zap, Calendar, TrendingUp } from "lucide-react";
 
 interface SubscriptionStatsProps {
     plan: string;
     creditsUsed: number;
     maxCredits: number;
     daysLeft: number;
+    dailyUsed: number;
+    dailyLimit: number;
 }
 
-export default function SubscriptionStats({ plan, creditsUsed, maxCredits, daysLeft }: SubscriptionStatsProps) {
-    const usagePercent = Math.min((creditsUsed / maxCredits) * 100, 100);
-    const daysPercent = Math.min((daysLeft / 30) * 100, 100); // Assuming 30 day cycle
+export default function SubscriptionStats({
+    plan,
+    creditsUsed,
+    maxCredits,
+    daysLeft,
+    dailyUsed,
+    dailyLimit
+}: SubscriptionStatsProps) {
+    const monthlyPercent = Math.min((creditsUsed / maxCredits) * 100, 100);
+    const dailyPercent = Math.min((dailyUsed / dailyLimit) * 100, 100);
+    const daysPercent = Math.min((daysLeft / 30) * 100, 100);
 
     return (
         <div className="md:col-span-1 space-y-4">
@@ -30,18 +40,58 @@ export default function SubscriptionStats({ plan, creditsUsed, maxCredits, daysL
                     </div>
                 </div>
 
-                {/* USAGE BAR */}
+                {/* DAILY LIMIT BAR */}
                 <div className="mb-4 relative z-10">
-                    <div className="flex justify-between text-xs text-muted-foreground mb-2">
-                        <span>Generations Used</span>
-                        <span className="text-foreground font-bold">{creditsUsed} / {maxCredits}</span>
+                    <div className="flex justify-between items-center text-xs mb-2">
+                        <div className="flex items-center gap-1.5">
+                            <Calendar className="w-3.5 h-3.5 text-blue-500" />
+                            <span className="text-muted-foreground font-medium">Daily Limit</span>
+                        </div>
+                        <span className={`font-bold ${dailyUsed >= dailyLimit ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
+                            {dailyUsed} / {dailyLimit}
+                        </span>
                     </div>
                     <div className="h-3 bg-muted rounded-full overflow-hidden border border-border">
                         <div
-                            className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(var(--primary),0.5)]"
-                            style={{ width: `${usagePercent}%` }}
+                            className={`h-full rounded-full transition-all duration-1000 ease-out ${dailyUsed >= dailyLimit
+                                    ? 'bg-gradient-to-r from-red-500 to-red-600 animate-pulse'
+                                    : 'bg-gradient-to-r from-blue-500 to-cyan-500'
+                                }`}
+                            style={{ width: `${dailyPercent}%` }}
                         />
                     </div>
+                    {dailyUsed >= dailyLimit && (
+                        <p className="text-xs text-red-600 dark:text-red-400 mt-1 font-medium">
+                            🔴 Daily limit reached! Resets tomorrow.
+                        </p>
+                    )}
+                </div>
+
+                {/* MONTHLY LIMIT BAR */}
+                <div className="mb-4 relative z-10">
+                    <div className="flex justify-between items-center text-xs mb-2">
+                        <div className="flex items-center gap-1.5">
+                            <TrendingUp className="w-3.5 h-3.5 text-primary" />
+                            <span className="text-muted-foreground font-medium">Monthly Limit</span>
+                        </div>
+                        <span className={`font-bold ${creditsUsed >= maxCredits ? 'text-red-600 dark:text-red-400' : 'text-foreground'}`}>
+                            {creditsUsed} / {maxCredits}
+                        </span>
+                    </div>
+                    <div className="h-3 bg-muted rounded-full overflow-hidden border border-border">
+                        <div
+                            className={`h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(var(--primary),0.5)] ${creditsUsed >= maxCredits
+                                    ? 'bg-gradient-to-r from-red-500 to-orange-500 animate-pulse'
+                                    : 'bg-gradient-to-r from-primary to-accent'
+                                }`}
+                            style={{ width: `${monthlyPercent}%` }}
+                        />
+                    </div>
+                    {creditsUsed >= maxCredits && (
+                        <p className="text-xs text-red-600 dark:text-red-400 mt-1 font-medium">
+                            🔴 Monthly limit reached! {plan === "FREE" && "Upgrade to PRO for more."}
+                        </p>
+                    )}
                 </div>
 
                 {/* DAYS LEFT BAR */}

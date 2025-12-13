@@ -17,7 +17,7 @@ export async function loginAction(formData: FormData) {
 
         redirect("/admin");
     } else {
-        return { error: "Invalid Password" };
+        redirect("/admin/login?error=Invalid Password");
     }
 }
 

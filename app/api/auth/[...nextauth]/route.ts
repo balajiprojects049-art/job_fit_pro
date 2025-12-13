@@ -2,6 +2,8 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
+import { prisma } from "@/app/lib/prisma";
+
 const handler = NextAuth({
     providers: [
         // Email & Password (Credentials)
@@ -12,18 +14,29 @@ const handler = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                // For demo purposes - in production, check against database
-                if (credentials?.email && credentials?.password) {
-                    // This is a simplified version - in production, verify against DB
-                    const user = {
-                        id: "1",
-                        name: credentials.email.split("@")[0],
-                        email: credentials.email,
-                        image: null,
-                    };
-                    return user;
+                if (!credentials?.email || !credentials?.password) {
+                    return null;
                 }
-                return null;
+
+                const user = await prisma.user.findUnique({
+                    where: { email: credentials.email }
+                });
+
+                if (!user) {
+                    return null;
+                }
+
+                // Note: In production, use bcrypt.compare(credentials.password, user.password)
+                if (user.password !== credentials.password) {
+                    return null;
+                }
+
+                return {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    image: user.profileImage,
+                };
             },
         }),
         // Google OAuth (optional)

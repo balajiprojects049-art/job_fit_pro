@@ -195,7 +195,7 @@ Remember: Write natural, professional content without any markdown or special fo
             outputBuffer = doc.getZip().generate({
                 type: "nodebuffer",
                 compression: "DEFLATE",
-            }) as Buffer;
+            }) as any as Buffer;
             console.log("✅ DOCX Updated Successfully!");
         } catch (docxError: any) {
             console.error("❌ Docxtemplater Error:", docxError);

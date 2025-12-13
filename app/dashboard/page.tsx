@@ -128,10 +128,10 @@ export default async function DashboardPage() {
                         <div className="flex-1">
                             <h3 className="font-bold text-foreground mb-1 flex items-center gap-2">
                                 <FileText className="w-4 h-4 text-blue-600" />
-                                Upload Your Resume
+                                Upload Your Base Resume
                             </h3>
                             <p className="text-sm text-muted-foreground mb-2">
-                                Click on <span className="font-semibold text-blue-600">"New Application"</span> in the sidebar and upload your master resume (PDF format recommended).
+                                Click on <span className="font-semibold text-blue-600">"New Application"</span> in the sidebar and upload your base resume (PDF format recommended).
                             </p>
                             <div className="flex items-center gap-2 text-xs text-blue-600 dark:text-blue-400">
                                 <CheckCircle className="w-3 h-3" />

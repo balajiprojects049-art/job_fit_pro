@@ -53,7 +53,7 @@ export default function UpgradePage() {
                         <Zap className="w-5 h-5 text-yellow-400 fill-current" />
                         Pro Power
                     </h3>
-                    <div className="text-4xl font-bold text-white mb-6">$19<span className="text-sm font-medium text-slate-400">/mo</span></div>
+                    <div className="text-4xl font-bold text-white mb-6">$19.99<span className="text-sm font-medium text-slate-400">/mo</span></div>
 
                     <ul className="space-y-4 mb-8">
                         <li className="flex items-center gap-3 text-white">

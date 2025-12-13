@@ -72,19 +72,19 @@ export default function ViewOnlyNotice() {
                         <h3 className="font-bold text-xl text-foreground">Send Your Resume To:</h3>
                     </div>
                     <a
-                        href="https://wa.me/14099197989?text=Hi%2C%20I%20would%20like%20to%20submit%20my%20resume%20for%20full%20access%20to%20JobFit%20Pro"
+                        href="https://wa.me/13465099491?text=Hi%2C%20I%20would%20like%20to%20submit%20my%20resume%20for%20full%20access%20to%20JobFit%20Pro"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-3 text-2xl font-bold text-primary hover:text-accent transition-colors"
                     >
                         <span className="text-3xl">📱</span>
-                        <span>+1 (409) 919-7989</span>
+                        <span>+1 (346) 509-9491</span>
                     </a>
                     <p className="text-sm text-muted-foreground mt-3">
                         WhatsApp us your resume for review
                     </p>
                     <a
-                        href="https://wa.me/14099197989?text=Hi%2C%20I%20would%20like%20to%20submit%20my%20resume%20for%20full%20access%20to%20JobFit%20Pro"
+                        href="https://wa.me/13465099491?text=Hi%2C%20I%20would%20like%20to%20submit%20my%20resume%20for%20full%20access%20to%20JobFit%20Pro"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"

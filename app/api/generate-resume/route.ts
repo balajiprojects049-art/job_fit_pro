@@ -111,14 +111,14 @@ REQUIRED JSON OUTPUT FORMAT:
       "exp2_achievement_1": "Delivered transformational project that generated specific revenue increase or cost savings of quantifiable amount through strategic implementation of cutting-edge technology",
       "exp2_achievement_2": "Recognized with specific award or achievement for outstanding contribution to major initiative that resulted in measurable organizational impact",
 
-      "expl_bullet_1": "Developed and maintained sophisticated applications serving specific number of users, implementing features that increased engagement metrics by quantifiable percentage using relevant technical stack",
-      "expl_bullet_2": "Optimized critical system components resulting in specific performance improvement and reduced resource consumption by measurable amount through application of advanced techniques",
-      "expl_bullet_3": "Implemented comprehensive testing and quality assurance processes that reduced defect rates by specific percentage while accelerating delivery timelines",
-      "expl_bullet_4": "Mentored team of specific number of developers on best practices and emerging technologies, fostering culture of continuous improvement and technical excellence",
-      "expl_bullet_5": "Integrated third-party systems and APIs to enhance platform capabilities, enabling new revenue streams and improving user experience metrics by quantifiable amount",
-      "expl_bullet_6": "Automated critical workflows using specific technologies that eliminated manual effort equivalent to specific time savings and reduced error rates significantly",
-      "expl_achievement_1": "Successfully delivered high-visibility project that supported major business objective, achieving specific metric improvement and earning recognition from leadership",
-      "expl_achievement_2": "Pioneered adoption of innovative technology or methodology that became standard practice across organization, improving team productivity by measurable percentage"
+      "exp1_bullet_1": "Developed and maintained sophisticated applications serving specific number of users, implementing features that increased engagement metrics by quantifiable percentage using relevant technical stack",
+      "exp1_bullet_2": "Optimized critical system components resulting in specific performance improvement and reduced resource consumption by measurable amount through application of advanced techniques",
+      "exp1_bullet_3": "Implemented comprehensive testing and quality assurance processes that reduced defect rates by specific percentage while accelerating delivery timelines",
+      "exp1_bullet_4": "Mentored team of specific number of developers on best practices and emerging technologies, fostering culture of continuous improvement and technical excellence",
+      "exp1_bullet_5": "Integrated third-party systems and APIs to enhance platform capabilities, enabling new revenue streams and improving user experience metrics by quantifiable amount",
+      "exp1_bullet_6": "Automated critical workflows using specific technologies that eliminated manual effort equivalent to specific time savings and reduced error rates significantly",
+      "exp1_achievement_1": "Successfully delivered high-visibility project that supported major business objective, achieving specific metric improvement and earning recognition from leadership",
+      "exp1_achievement_2": "Pioneered adoption of innovative technology or methodology that became standard practice across organization, improving team productivity by measurable percentage"
   }
 }
 

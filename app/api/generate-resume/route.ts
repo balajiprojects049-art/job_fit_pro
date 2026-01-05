@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getUserId } from "@/app/lib/auth";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
@@ -208,11 +209,13 @@ Remember: Write natural, professional content without any markdown or special fo
 
 
         // 🔍 FETCH USER & CHECK SUBSCRIPTION
+        // 🔍 FETCH USER & CHECK SUBSCRIPTION
         let userEmail = "Anonymous";
         let userName = "User";
         let userId: string | null = null;
-        const cookieStore = cookies();
-        const sessionUserId = cookieStore.get("user_session")?.value;
+
+        // Use unified helper to get ID from either cookie or NextAuth session
+        const sessionUserId = await getUserId();
 
         if (sessionUserId) {
             const user = await prisma.user.findUnique({

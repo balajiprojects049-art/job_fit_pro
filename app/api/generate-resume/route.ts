@@ -4,15 +4,30 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import { prisma } from "@/app/lib/prisma"; // Database Connection
-import { cookies } from "next/headers";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+// REMOVED global initialization to prevent crash on load
+// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 export async function POST(request: NextRequest) {
     console.log("========== /api/generate-resume ==========");
+
+    // Check API Key immediately
+    if (!process.env.GEMINI_API_KEY) {
+        console.error("❌ GEMINI_API_KEY is missing!");
+        return NextResponse.json({ error: "Server Configuration Error: GEMINI_API_KEY is missing" }, { status: 500 });
+    }
+
+    let genAI;
+    try {
+        genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    } catch (e) {
+        console.error("❌ Failed to initialize GoogleGenerativeAI:", e);
+        return NextResponse.json({ error: "Failed to initialize AI service" }, { status: 500 });
+    }
+
     console.log("METHOD:", request.method);
     console.log("URL:", request.url);
-    console.log("GEMINI_API_KEY:", process.env.GEMINI_API_KEY ? "Loaded" : "❌ Not Found");
+    console.log("GEMINI_API_KEY:", "Loaded");
 
     try {
         console.log("🔄 Parsing form data...");

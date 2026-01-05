@@ -4,6 +4,9 @@ import { FileText } from "lucide-react";
 import Link from "next/link";
 import { ResumesClient } from "./ResumesClient";
 
+// 🔄 Disable caching - Always fetch fresh resume data
+export const revalidate = 0;
+
 export default async function ResumesPage() {
     // Fetch User Data
     const cookieStore = cookies();

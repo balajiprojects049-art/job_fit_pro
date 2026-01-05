@@ -23,6 +23,9 @@ import { prisma } from "../lib/prisma";
 import SubscriptionStats from "./SubscriptionStats";
 import ViewOnlyNotice from "@/components/dashboard/ViewOnlyNotice";
 
+// 🔄 Disable caching for this page - Always fetch fresh data
+export const revalidate = 0;
+
 export default async function DashboardPage() {
     // 1. Fetch Session & User from NextAuth
     const session = await getServerSession();

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
     Upload,
     Wand2,
@@ -11,6 +12,7 @@ import {
 } from "lucide-react";
 
 export default function NewApplicationClient() {
+    const router = useRouter();
     const [jobDescription, setJobDescription] = useState("");
     const [companyName, setCompanyName] = useState("");
     const [jobTitle, setJobTitle] = useState("");
@@ -62,6 +64,9 @@ export default function NewApplicationClient() {
                 name: result.fileName,
             });
             setStep(3);
+
+            // 🔄 REFRESH THE DASHBOARD DATA - This updates the subscription stats in real-time
+            router.refresh();
         } catch (err) {
             setError(err instanceof Error ? err.message : "An error occurred");
             setStep(1);

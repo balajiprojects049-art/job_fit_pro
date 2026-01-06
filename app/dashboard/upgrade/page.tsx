@@ -8,7 +8,7 @@ export default function UpgradePage() {
             {/* Header */}
             <div className="text-center space-y-4">
                 <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
-                    Upgrade to JobFit Pro
+                    Upgrade to ResumeLab
                 </h1>
                 <p className="text-slate-400 text-lg max-w-2xl mx-auto">
                     Unlock higher limits, premium resume templates, and priority AI processing to land your dream job faster.

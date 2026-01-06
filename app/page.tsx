@@ -14,9 +14,9 @@ export default function Home() {
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/30">
-                            <span className="font-bold text-white text-xl">J</span>
+                            <span className="font-bold text-white text-xl">R</span>
                         </div>
-                        <span className="text-xl font-bold tracking-tight">JobFit Pro</span>
+                        <span className="text-xl font-bold tracking-tight">ResumeLab</span>
                     </div>
                     <div className="flex items-center gap-3">
                         <Link href="/login" className="btn btn-ghost px-5 py-2">
@@ -48,7 +48,7 @@ export default function Home() {
 
                 {/* Hero Description */}
                 <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed">
-                    JobFit Pro doesn't just write your resume. It analyzes the job description,
+                    ResumeLab doesn't just write your resume. It analyzes the job description,
                     calculates your ATS match score, and perfectly tailors your application
                     to <span className="text-primary font-semibold">get you hired 3x faster</span>.
                 </p>

@@ -3,7 +3,7 @@ import { ToastProvider } from '@/components/ToastProvider';
 import { ConfirmDialogProvider } from '@/components/ConfirmDialog';
 
 export const metadata: Metadata = {
-    title: 'Admin Dashboard | JobFit Pro',
+    title: 'Admin Dashboard | ResumeLab',
     description: 'Monitor Resume Generation Activity',
 };
 

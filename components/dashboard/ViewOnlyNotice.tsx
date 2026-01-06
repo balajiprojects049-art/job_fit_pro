@@ -12,7 +12,7 @@ export default function ViewOnlyNotice() {
                 </div>
 
                 <h2 className="text-3xl font-bold text-foreground mb-4">
-                    Welcome to JobFit Pro! 🎉
+                    Welcome to ResumeLab! 🎉
                 </h2>
 
                 <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
@@ -72,7 +72,7 @@ export default function ViewOnlyNotice() {
                         <h3 className="font-bold text-xl text-foreground">Send Your Resume To:</h3>
                     </div>
                     <a
-                        href="https://wa.me/13465099491?text=Hi%2C%20I%20would%20like%20to%20submit%20my%20resume%20for%20full%20access%20to%20JobFit%20Pro"
+                        href="https://wa.me/13465099491?text=Hi%2C%20I%20would%20like%20to%20submit%20my%20resume%20for%20full%20access%20to%20ResumeLab"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-3 text-2xl font-bold text-primary hover:text-accent transition-colors"
@@ -84,7 +84,7 @@ export default function ViewOnlyNotice() {
                         WhatsApp us your resume for review
                     </p>
                     <a
-                        href="https://wa.me/13465099491?text=Hi%2C%20I%20would%20like%20to%20submit%20my%20resume%20for%20full%20access%20to%20JobFit%20Pro"
+                        href="https://wa.me/13465099491?text=Hi%2C%20I%20would%20like%20to%20submit%20my%20resume%20for%20full%20access%20to%20ResumeLab"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"

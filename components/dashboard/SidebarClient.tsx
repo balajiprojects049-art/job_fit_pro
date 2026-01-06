@@ -59,9 +59,9 @@ export function SidebarClient({ user }: SidebarClientProps) {
             <div className="p-6 border-b border-border">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/30">
-                        <span className="font-bold text-white text-xl">J</span>
+                        <span className="font-bold text-white text-xl">R</span>
                     </div>
-                    <span className="text-xl font-bold text-foreground tracking-tight">JobFit Pro</span>
+                    <span className="text-xl font-bold text-foreground tracking-tight">ResumeLab</span>
                 </div>
             </div>
 

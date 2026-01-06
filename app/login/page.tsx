@@ -65,10 +65,10 @@ export default function LoginPage() {
                         {/* Logo */}
                         <div className="flex items-center gap-3">
                             <div className="w-12 h-12 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/30 animate-bounce-slow">
-                                <span className="font-bold text-white text-xl">J</span>
+                                <span className="font-bold text-white text-xl">R</span>
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-foreground">JobFit Pro</h1>
+                                <h1 className="text-2xl font-bold text-foreground">ResumeLab</h1>
                                 <p className="text-primary font-semibold text-sm">User Portal</p>
                             </div>
                         </div>
@@ -148,7 +148,7 @@ export default function LoginPage() {
                         {/* Mobile Header (only visible on small screens) */}
                         <div className="lg:hidden text-center mb-6">
                             <div className="w-12 h-12 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-3">
-                                <span className="font-bold text-white text-xl">J</span>
+                                <span className="font-bold text-white text-xl">R</span>
                             </div>
                             <h1 className="text-xl font-bold text-foreground">Welcome Back</h1>
                         </div>

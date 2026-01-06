@@ -6,7 +6,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "JobFit Pro",
+    title: "ResumeLab",
     description: "AI-Powered Resume Tailoring Platform",
 };
 

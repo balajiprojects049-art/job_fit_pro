@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         console.log("🔄 Parsing form data...");
         const formData = await request.formData();
 
-        const companyName = formData.get("companyName") as string || "JobFit Pro";
+        const companyName = formData.get("companyName") as string || "ResumeLab";
         const jobTitle = formData.get("jobTitle") as string || "Candidate Application";
         const jobDescription = formData.get("jobDescription") as string | null;
         const file = formData.get("resume") as unknown as File | null;

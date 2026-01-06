@@ -32,12 +32,13 @@ export default function AdminLogin() {
                 <div className="hidden lg:block space-y-8 animate-fade-in">
                     <div className="space-y-6">
                         {/* Logo */}
+                        {/* Logo */}
                         <div className="flex items-center gap-4">
                             <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-2xl shadow-primary/40 animate-bounce-slow">
-                                <span className="font-bold text-white text-3xl">J</span>
+                                <span className="font-bold text-white text-3xl">R</span>
                             </div>
                             <div>
-                                <h1 className="text-4xl font-bold text-foreground">JobFit Pro</h1>
+                                <h1 className="text-4xl font-bold text-foreground">ResumeLab</h1>
                                 <p className="text-primary font-semibold">Admin Portal</p>
                             </div>
                         </div>
@@ -93,10 +94,10 @@ export default function AdminLogin() {
                         {/* Top Branding - Always Visible */}
                         <div className="flex items-center justify-center gap-3 mb-8">
                             <div className="w-14 h-14 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/40 animate-bounce-slow">
-                                <span className="font-bold text-white text-2xl">J</span>
+                                <span className="font-bold text-white text-2xl">R</span>
                             </div>
                             <div className="text-center lg:text-left">
-                                <h1 className="text-2xl md:text-3xl font-bold text-foreground">JobFit Pro</h1>
+                                <h1 className="text-2xl md:text-3xl font-bold text-foreground">ResumeLab</h1>
                                 <p className="text-sm text-primary font-semibold">Admin Portal</p>
                             </div>
                         </div>

@@ -116,7 +116,7 @@ export default async function DashboardPage() {
                         <div className="p-2 bg-primary/20 rounded-lg">
                             <BookOpen className="w-5 h-5 text-primary" />
                         </div>
-                        <h2 className="text-lg font-semibold text-foreground">How to Use JobFit Pro</h2>
+                        <h2 className="text-lg font-semibold text-foreground">How to Use ResumeLab</h2>
                     </div>
                     <span className="text-xs px-3 py-1 bg-green-500/20 text-green-600 dark:text-green-400 rounded-full font-semibold">Quick Start Guide</span>
                 </div>

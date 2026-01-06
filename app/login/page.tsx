@@ -115,7 +115,7 @@ export default function LoginPage() {
                                 Facing issues? Contact admin directly on WhatsApp.
                             </p>
                             <a
-                                href="https://wa.me/918500470333"
+                                href="https://wa.me/13465099491"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="btn bg-[#25D366] hover:bg-[#20bd5a] text-white border-none w-full flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all py-2.5 rounded-xl font-bold text-sm"
@@ -285,7 +285,7 @@ export default function LoginPage() {
                         {/* Mobile WhatsApp Link */}
                         <div className="lg:hidden mt-6 text-center">
                             <a
-                                href="https://wa.me/918500470333"
+                                href="https://wa.me/13465099491"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 text-sm font-medium text-[#25D366]"

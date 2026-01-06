@@ -105,11 +105,7 @@ export default async function DashboardPage() {
                     maxCredits={limit}
                     daysLeft={daysLeft}
                     dailyUsed={(user as any)?.dailyResumeCount || 0}
-<<<<<<< HEAD
-                    dailyLimit={(user as any)?.dailyResumeLimit || 50}
-=======
                     dailyLimit={50}
->>>>>>> df19a32
                 />
             </div>
 

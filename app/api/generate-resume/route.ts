@@ -5,12 +5,8 @@ import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import { prisma } from "@/app/lib/prisma";
 
-<<<<<<< HEAD
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
-=======
-// const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || ""); // Unused
->>>>>>> df19a32
 
 export async function POST(request: NextRequest) {
     console.log("========== /api/generate-resume ==========");

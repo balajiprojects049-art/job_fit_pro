@@ -301,7 +301,8 @@ Remember: Write natural, professional content without any markdown or special fo
                     originalName: file.name,
                     userEmail: userEmail,
                     userId: userId,
-                    status: "SUCCESS"
+                    status: "SUCCESS",
+                    fileData: outputBuffer.toString("base64") // Save for download
                 }
             });
 

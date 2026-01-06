@@ -26,6 +26,7 @@ model ResumeLog {
   userId       String?
   status       String   @default("SUCCESS")
   isFavorite   Boolean  @default(false)
+  fileData     String?  @db.Text // Base64 encoded resume file
   user         User?    @relation(fields: [userId], references: [id])
 }
 

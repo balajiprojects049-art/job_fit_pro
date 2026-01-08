@@ -195,7 +195,7 @@ export function ResumesClient({ resumes: initialResumes }: ResumesClientProps) {
                 <div className="card p-6 mb-6">
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                         {/* Search */}
-                        <div className="md:col-span-4 relative">
+                        <div className="md:col-span-5 relative">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                             <input
                                 type="text"
@@ -214,8 +214,8 @@ export function ResumesClient({ resumes: initialResumes }: ResumesClientProps) {
                             )}
                         </div>
 
-                        {/* Score Filter */}
-                        <div className="md:col-span-2 flex items-center gap-2">
+                        {/* 🔒 SCORE FILTER - HIDDEN (Since ATS scores are not shown) */}
+                        {/* <div className="md:col-span-2 flex items-center gap-2">
                             <Filter className="w-4 h-4 text-muted-foreground hidden md:block" />
                             <select
                                 value={filterScore}
@@ -227,17 +227,16 @@ export function ResumesClient({ resumes: initialResumes }: ResumesClientProps) {
                                 <option value="medium">📊 Medium (75-89)</option>
                                 <option value="low">📉 Low (&lt;75)</option>
                             </select>
-                        </div>
+                        </div> */}
 
                         {/* Sort By */}
-                        <div className="md:col-span-3">
+                        <div className="md:col-span-4">
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value as any)}
                                 className="form-input w-full cursor-pointer"
                             >
                                 <option value="date">📅 Sort by Date</option>
-                                <option value="score">📊 Sort by Score</option>
                                 <option value="company">🏢 Sort by Company</option>
                             </select>
                         </div>
@@ -370,12 +369,12 @@ export function ResumesClient({ resumes: initialResumes }: ResumesClientProps) {
                                                 <span>{new Date(resume.createdAt).toLocaleDateString()}</span>
                                             </div>
 
-                                            {/* Score Badge */}
-                                            <div className="mb-4">
+                                            {/* 🔒 ATS SCORE BADGE - HIDDEN (Not needed by user) */}
+                                            {/* <div className="mb-4">
                                                 <span className={getScoreBadge(resume.matchScore)}>
                                                     {resume.matchScore}% Match
                                                 </span>
-                                            </div>
+                                            </div> */}
 
                                             {/* Actions */}
                                             <div className="flex gap-2">

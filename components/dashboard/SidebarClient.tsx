@@ -16,7 +16,8 @@ import {
     User,
     Sun,
     Moon,
-    MessageSquare
+    MessageSquare,
+    Mail
 } from "lucide-react";
 
 interface SidebarClientProps {
@@ -46,6 +47,7 @@ export function SidebarClient({ user }: SidebarClientProps) {
         // { name: "Job Tracker", icon: Briefcase, href: "/dashboard/tracker" },
         { name: "History", icon: History, href: "/dashboard/history" },
         { name: "Feedback", icon: MessageSquare, href: "/dashboard/feedback" },
+        { name: "Contact Us", icon: Mail, href: "/dashboard/contact" },
         { name: "Settings", icon: Settings, href: "/dashboard/settings" },
     ];
 

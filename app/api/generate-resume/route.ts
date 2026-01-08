@@ -110,7 +110,10 @@ Respond ONLY with valid JSON.`;
                                 parts: [{ text: promptText }]
                             }],
                             generationConfig: {
-                                responseMimeType: "application/json"
+                                responseMimeType: "application/json",
+                                temperature: 0,  // Deterministic output for consistent ATS scores
+                                topP: 1,
+                                topK: 1
                             }
                         })
                     }

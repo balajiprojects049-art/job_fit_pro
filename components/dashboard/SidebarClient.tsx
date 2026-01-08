@@ -67,6 +67,33 @@ export function SidebarClient({ user }: SidebarClientProps) {
                 </div>
             </div>
 
+            {/* User Profile Section */}
+            {user && (
+                <div className="p-4 border-b border-border">
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                        <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center shadow-md overflow-hidden flex-shrink-0">
+                            {user.profileImage ? (
+                                <img
+                                    src={user.profileImage}
+                                    alt={user.name || "User"}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <User className="w-5 h-5 text-white" />
+                            )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-bold text-foreground truncate">
+                                {user.name || "User"}
+                            </p>
+                            <p className="text-xs text-muted-foreground truncate">
+                                {user.email}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
                 {menuItems.map((item) => {
@@ -105,31 +132,6 @@ export function SidebarClient({ user }: SidebarClientProps) {
                         {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                         <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
                     </button>
-                )}
-
-                {/* User Info */}
-                {user && (
-                    <div className="p-3 rounded-xl bg-muted flex items-center gap-3 border border-border">
-                        <div className="w-9 h-9 rounded-full bg-gradient-primary flex items-center justify-center shadow-md overflow-hidden">
-                            {user.profileImage ? (
-                                <img
-                                    src={user.profileImage}
-                                    alt={user.name || "User"}
-                                    className="w-full h-full object-cover"
-                                />
-                            ) : (
-                                <User className="w-5 h-5 text-white" />
-                            )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-foreground truncate">
-                                {user.name || "User"}
-                            </p>
-                            <p className="text-xs text-muted-foreground truncate">
-                                {user.email}
-                            </p>
-                        </div>
-                    </div>
                 )}
 
                 {/* Sign Out */}

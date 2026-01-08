@@ -15,6 +15,23 @@ export async function POST(req: Request) {
             return new NextResponse("User already exists", { status: 400 });
         }
 
+        // Validate password strength
+        if (password.length < 8) {
+            return new NextResponse("Password must be at least 8 characters long", { status: 400 });
+        }
+        if (!/[A-Z]/.test(password)) {
+            return new NextResponse("Password must contain at least one uppercase letter", { status: 400 });
+        }
+        if (!/[a-z]/.test(password)) {
+            return new NextResponse("Password must contain at least one lowercase letter", { status: 400 });
+        }
+        if (!/[0-9]/.test(password)) {
+            return new NextResponse("Password must contain at least one number", { status: 400 });
+        }
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            return new NextResponse("Password must contain at least one special character (!@#$%^&*...)", { status: 400 });
+        }
+
         // Create User
         const user = await prisma.user.create({
             data: {

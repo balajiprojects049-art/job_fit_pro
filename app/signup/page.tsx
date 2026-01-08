@@ -15,11 +15,40 @@ export default function SignupPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+
+    const validatePassword = (password: string): string | null => {
+        if (password.length < 8) {
+            return "Password must be at least 8 characters long";
+        }
+        if (!/[A-Z]/.test(password)) {
+            return "Password must contain at least one uppercase letter";
+        }
+        if (!/[a-z]/.test(password)) {
+            return "Password must contain at least one lowercase letter";
+        }
+        if (!/[0-9]/.test(password)) {
+            return "Password must contain at least one number";
+        }
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            return "Password must contain at least one special character (!@#$%^&*...)";
+        }
+        return null;
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError("");
+        setPasswordError("");
+
+        // Validate password strength
+        const pwdError = validatePassword(formData.password);
+        if (pwdError) {
+            setPasswordError(pwdError);
+            setLoading(false);
+            return;
+        }
 
         try {
             const res = await fetch("/api/auth/signup", {
@@ -109,9 +138,12 @@ export default function SignupPage() {
                                     placeholder="••••••••"
                                     className="form-input pr-12"
                                     value={formData.password}
-                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                    onChange={(e) => {
+                                        setFormData({ ...formData, password: e.target.value });
+                                        setPasswordError("");
+                                    }}
                                     required
-                                    minLength={6}
+                                    minLength={8}
                                 />
                                 <button
                                     type="button"
@@ -121,7 +153,36 @@ export default function SignupPage() {
                                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                                 </button>
                             </div>
+                            {/* Password Requirements */}
+                            <div className="mt-2 text-xs text-muted-foreground space-y-1">
+                                <p className="font-semibold">Password must contain:</p>
+                                <ul className="list-disc list-inside space-y-0.5 ml-2">
+                                    <li className={formData.password.length >= 8 ? "text-green-600 dark:text-green-400" : ""}>
+                                        At least 8 characters
+                                    </li>
+                                    <li className={/[A-Z]/.test(formData.password) ? "text-green-600 dark:text-green-400" : ""}>
+                                        One uppercase letter (A-Z)
+                                    </li>
+                                    <li className={/[a-z]/.test(formData.password) ? "text-green-600 dark:text-green-400" : ""}>
+                                        One lowercase letter (a-z)
+                                    </li>
+                                    <li className={/[0-9]/.test(formData.password) ? "text-green-600 dark:text-green-400" : ""}>
+                                        One number (0-9)
+                                    </li>
+                                    <li className={/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ? "text-green-600 dark:text-green-400" : ""}>
+                                        One special character (!@#$%...)
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
+
+                        {/* Password Error */}
+                        {passwordError && (
+                            <div className="p-3 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-700 dark:text-red-400 rounded-xl text-sm font-medium flex items-start gap-2">
+                                <span className="text-lg">⚠️</span>
+                                <span>{passwordError}</span>
+                            </div>
+                        )}
 
                         {/* Error Message */}
                         {error && (

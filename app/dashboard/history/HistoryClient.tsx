@@ -104,7 +104,7 @@ export default function HistoryClient({ history }: HistoryClientProps) {
             <div className="card p-6">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                     {/* Search */}
-                    <div className="md:col-span-8 relative">
+                    <div className="md:col-span-12 relative">
                         <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                         <input
                             type="text"
@@ -123,8 +123,8 @@ export default function HistoryClient({ history }: HistoryClientProps) {
                         )}
                     </div>
 
-                    {/* Score Filter */}
-                    <div className="md:col-span-4 flex items-center gap-2">
+                    {/* 🔒 SCORE FILTER - HIDDEN (Since ATS scores are not shown) */}
+                    {/* <div className="md:col-span-4 flex items-center gap-2">
                         <Filter className="w-4 h-4 text-muted-foreground hidden md:block" />
                         <select
                             value={filterScore}
@@ -136,7 +136,7 @@ export default function HistoryClient({ history }: HistoryClientProps) {
                             <option value="medium">📊 Medium (75-89)</option>
                             <option value="low">📉 Low (&lt;75)</option>
                         </select>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Active Filters */}
@@ -234,14 +234,14 @@ export default function HistoryClient({ history }: HistoryClientProps) {
                                                 </div>
                                             </div>
 
-                                            {/* Score Badge */}
-                                            {item.matchScore && (
+                                            {/* 🔒 ATS SCORE BADGE - HIDDEN (Not needed by user) */}
+                                            {/* {item.matchScore && (
                                                 <div className="flex-shrink-0">
                                                     <span className={getScoreBadge(item.matchScore)}>
                                                         {item.matchScore}% Match
                                                     </span>
                                                 </div>
-                                            )}
+                                            )} */}
                                         </div>
                                     </div>
                                 ))}

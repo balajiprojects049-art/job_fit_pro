@@ -37,10 +37,22 @@ export default async function DashboardPage() {
     if (userId) {
         user = await prisma.user.findUnique({
             where: { id: userId },
-            include: { ResumeLog: true }
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                plan: true,
+                creditsUsed: true,
+                createdAt: true,
+                hasFullAccess: true,
+                dailyResumeCount: true,
+                _count: {
+                    select: { ResumeLog: true }
+                }
+            }
         });
         if (user) {
-            appsCount = user.ResumeLog.length;
+            appsCount = (user as any)._count.ResumeLog;
         }
     }
 

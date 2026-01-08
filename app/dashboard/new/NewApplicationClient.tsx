@@ -94,6 +94,18 @@ export default function NewApplicationClient() {
         a.download = generatedFile.name;
         a.click();
         URL.revokeObjectURL(url);
+
+        // ✅ AUTO-RESET: Reset the form after download
+        setTimeout(() => {
+            setStep(1);
+            setJobDescription("");
+            setCompanyName("");
+            setJobTitle("");
+            setFile(null);
+            setAnalysis(null);
+            setGeneratedFile(null);
+            setError(null);
+        }, 500); // Small delay to ensure download starts
     };
 
     return (

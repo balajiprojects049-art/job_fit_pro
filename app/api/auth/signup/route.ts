@@ -21,7 +21,8 @@ export async function POST(req: Request) {
                 name,
                 email,
                 ...(phone && { phone }), // Only include phone if provided
-                password // ⚠️ Note: Should hash in production!
+                password, // ⚠️ Note: Should hash in production!
+                status: "ACTIVE"
             }
         });
 

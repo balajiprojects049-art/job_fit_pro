@@ -16,10 +16,6 @@ export async function POST(req: Request) {
             return new NextResponse("Invalid credentials", { status: 401 });
         }
 
-        // ⛔ CHECK APPROVAL STATUS
-        if (user.status !== "ACTIVE") {
-            return new NextResponse("Your account is pending Admin Approval. Please wait for confirmation.", { status: 403 });
-        }
 
         // ✅ LOGIN SUCCESS: Track It!
         await prisma.loginHistory.create({

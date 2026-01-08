@@ -1,7 +1,5 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook";
 import { prisma } from "@/app/lib/prisma";
 
 export const authOptions: NextAuthOptions = {
@@ -39,34 +37,6 @@ export const authOptions: NextAuthOptions = {
                 };
             },
         }),
-        // Google OAuth
-        ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
-            ? [
-                GoogleProvider({
-                    clientId: process.env.GOOGLE_CLIENT_ID,
-                    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                    authorization: {
-                        params: {
-                            prompt: "select_account", // Always show account selection
-                        }
-                    }
-                }),
-            ]
-            : []),
-        // Facebook OAuth
-        ...(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_CLIENT_SECRET
-            ? [
-                FacebookProvider({
-                    clientId: process.env.FACEBOOK_CLIENT_ID,
-                    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-                    authorization: {
-                        params: {
-                            prompt: "select_account", // Always show account selection
-                        }
-                    }
-                }),
-            ]
-            : []),
     ],
     pages: {
         signIn: "/sign-in",
@@ -104,7 +74,7 @@ export const authOptions: NextAuthOptions = {
                             creditsUsed: 0,
                             dailyResumeCount: 0,
                             dailyResumeLimit: 70,
-                            hasFullAccess: true,
+                            hasFullAccess: false,
                         }
                     });
                 }

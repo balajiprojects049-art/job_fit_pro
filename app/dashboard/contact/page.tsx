@@ -27,19 +27,19 @@ export default function ContactPage() {
                         </div>
 
                         {/* Email */}
-                        <div className="flex items-start gap-4 p-4 rounded-xl bg-primary/5 border border-primary/10 hover:bg-primary/10 transition-colors">
+                        <div className="flex items-start gap-4 p-6 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border-2 border-primary transition-all hover:shadow-lg">
                             <div className="p-3 bg-primary/20 rounded-lg">
-                                <Mail className="w-5 h-5 text-primary" />
+                                <Mail className="w-6 h-6 text-primary" />
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-sm font-semibold text-foreground mb-1">Email Us</h3>
+                                <h3 className="text-sm font-semibold text-foreground mb-3">Email Us</h3>
                                 <a
                                     href="mailto:resumelabproai007@gmail.com"
-                                    className="inline-block px-4 py-2 bg-primary/20 hover:bg-primary/30 border-2 border-primary rounded-lg text-primary hover:text-primary font-bold transition-all hover:scale-105"
+                                    className="inline-block px-6 py-3 bg-primary text-white hover:bg-primary/90 border-2 border-primary rounded-lg text-xl font-bold transition-all hover:scale-105 shadow-lg"
                                 >
                                     resumelabproai007@gmail.com
                                 </a>
-                                <p className="text-xs text-muted-foreground mt-2">
+                                <p className="text-xs text-muted-foreground mt-3">
                                     We typically respond within 24 hours
                                 </p>
                             </div>
@@ -117,17 +117,19 @@ export default function ContactPage() {
                             </div>
                             <div className="flex-1">
                                 <h3 className="text-lg font-bold text-foreground mb-2">Need Immediate Assistance?</h3>
-                                <p className="text-muted-foreground mb-3">
-                                    For urgent matters or technical support, please email us directly at{" "}
-                                    <a
-                                        href="mailto:resumelabproai007@gmail.com"
-                                        className="inline-block px-3 py-1 bg-primary/20 hover:bg-primary/30 border-2 border-primary rounded-lg text-primary hover:text-primary font-bold transition-all hover:scale-105"
-                                    >
-                                        resumelabproai007@gmail.com
-                                    </a>
-                                    . We'll get back to you as soon as possible!
+                                <p className="text-muted-foreground mb-4">
+                                    For urgent matters or technical support, please email us directly:
                                 </p>
-                                <p className="text-sm text-muted-foreground italic">
+                                <a
+                                    href="mailto:resumelabproai007@gmail.com"
+                                    className="inline-block px-6 py-3 bg-primary text-white hover:bg-primary/90 border-2 border-primary rounded-lg text-xl font-bold transition-all hover:scale-105 shadow-lg mb-3"
+                                >
+                                    resumelabproai007@gmail.com
+                                </a>
+                                <p className="text-sm text-muted-foreground">
+                                    We'll get back to you as soon as possible!
+                                </p>
+                                <p className="text-sm text-muted-foreground italic mt-2">
                                     💡 Pro Tip: Include "URGENT" in your subject line for priority support.
                                 </p>
                             </div>

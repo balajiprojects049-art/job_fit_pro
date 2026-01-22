@@ -79,15 +79,26 @@ REQUIRED JSON OUTPUT FORMAT:
 Respond ONLY with valid JSON.`;
 
         // Direct REST API Fallback Implementation
-        // UPDATED: Prioritizing 'latest' stable aliases to avoid 2.x experimental rate limits
+        // UPDATED (Jan 2026): Prioritizing Gemini 2.5 Flash-Lite for 1000 FREE requests/day!
+        // Regular models only have 100 RPD on free tier, but Flash-Lite has 10x more (1000 RPD)
         const models = [
-            "gemini-flash-latest",       // Stable 1.5 Flash alias (Available)
-            "gemini-flash-lite-latest",  // Lightest/Fastest 1.5 alias (Available)
-            "gemini-2.0-flash-lite-preview-02-05", // New Lite model
-            "gemini-2.5-flash",          // User preferred
-            "gemini-2.0-flash",
-            "gemini-exp-1206"
+            "gemini-2.5-flash-lite",     // 🌟 1000 RPD FREE! (Best free tier option)
+            "gemini-flash-lite-latest",  // Lightest/Fastest alias
+            "gemini-2.0-flash-lite",     // Lite version (better quota)
+            "gemini-2.5-flash",          // Standard Flash (100 RPD)
+            "gemini-flash-latest",       // Stable 1.5 Flash alias
+            "gemini-2.0-flash"           // 2.0 Flash (100 RPD)
         ];
+
+        // 📦 OLD MODELS ARRAY (Commented out for reference)
+        // const models = [
+        //     "gemini-flash-latest",       // Stable 1.5 Flash alias (Available)
+        //     "gemini-flash-lite-latest",  // Lightest/Fastest 1.5 alias (Available)
+        //     "gemini-2.0-flash-lite-preview-02-05", // New Lite model
+        //     "gemini-2.5-flash",          // User preferred
+        //     "gemini-2.0-flash",
+        //     "gemini-exp-1206"
+        // ];
 
         let analysis: any = null;
         let lastErrorStr = "";

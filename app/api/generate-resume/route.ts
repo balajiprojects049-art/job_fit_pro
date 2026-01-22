@@ -231,8 +231,8 @@ Respond ONLY with valid JSON.`;
                             : "Your free limit is completed (5/5). You need to upgrade the plan to generate more.";
 
                         return NextResponse.json({
-                            error: "Daily Limit Exceeded",
-                            message: message
+                            error: message,
+                            title: "Daily Limit Exceeded"
                         }, { status: 403 });
                     }
                 }

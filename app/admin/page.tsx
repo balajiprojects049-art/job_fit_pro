@@ -22,6 +22,17 @@ export default async function AdminDashboard() {
 
     // Fetch all data in parallel for better performance
     // Optimized queries to fetch only needed fields (40-60% faster)
+
+    // 🧹 AUTO-CLEANUP: Delete logs older than 5 months to save storage
+    try {
+        const fiveMonthsAgo = new Date();
+        fiveMonthsAgo.setMonth(fiveMonthsAgo.getMonth() - 5);
+        await prisma.resumeLog.deleteMany({
+            where: { createdAt: { lt: fiveMonthsAgo } }
+        });
+    } catch (cleanupError) {
+        console.error("Auto-cleanup failed:", cleanupError);
+    }
     const [
         totalResumes,
         totalUsers,

@@ -6,6 +6,7 @@ import UserActions from "./UserActions";
 import { logoutAction } from "../actions/auth";
 import { AdminThemeToggle } from "./AdminThemeToggle";
 import RegisteredClientsTable from "./RegisteredClientsTable";
+import ResumeGenerationsTable from "./ResumeGenerationsTable";
 
 // Force dynamic rendering so it always shows latest data
 export const dynamic = 'force-dynamic';
@@ -45,7 +46,7 @@ export default async function AdminDashboard() {
                 status: true
             },
             orderBy: { createdAt: 'desc' },
-            take: 50 // Increased logs limit
+            take: 1000 // Increased logs limit for history
         }),
         prisma.user.findMany({
             select: {
@@ -172,67 +173,8 @@ export default async function AdminDashboard() {
                     <RegisteredClientsTable users={users} />
 
                     {/* SECTION 2: RESUME GENERATION LOGS */}
-                    <div className="card overflow-hidden">
-                        <div className="p-6 border-b border-border flex justify-between items-center bg-muted/30">
-                            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-                                <FileText className="w-6 h-6 text-accent" />
-                                Resume Generations
-                            </h2>
-                            <span className="status-badge success">Real-time Activity</span>
-                        </div>
-
-                        <div className="overflow-x-auto">
-                            <table className="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Date & Time</th>
-                                        <th>User / Email</th>
-                                        <th>File Name</th>
-                                        <th>Match Score</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {logs.length === 0 ? (
-                                        <tr>
-                                            <td colSpan={5} className="text-center text-muted-foreground py-12">
-                                                No activity recorded yet.
-                                            </td>
-                                        </tr>
-                                    ) : logs.map((log) => (
-                                        <tr key={log.id}>
-                                            <td className="text-muted-foreground font-medium">
-                                                {new Date(log.createdAt).toLocaleString()}
-                                            </td>
-                                            <td className="font-semibold">
-                                                {log.userEmail || "Anonymous"}
-                                            </td>
-                                            <td className="text-muted-foreground">{log.originalName}</td>
-                                            <td>
-                                                <span className={`status-badge ${(log.matchScore || 0) >= 90 ? 'success' :
-                                                    (log.matchScore || 0) >= 75 ? 'warning' :
-                                                        'error'
-                                                    }`}>
-                                                    {log.matchScore || 0}%
-                                                </span>
-                                            </td>
-                                            <td>
-                                                {log.status === 'SUCCESS' ? (
-                                                    <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-semibold">
-                                                        <CheckCircle className="w-4 h-4" /> Success
-                                                    </div>
-                                                ) : (
-                                                    <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm font-semibold">
-                                                        <XCircle className="w-4 h-4" /> Failed
-                                                    </div>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    {/* SECTION 2: RESUME GENERATION LOGS */}
+                    <ResumeGenerationsTable logs={logs} />
 
                     {/* SECTION 3: USER FEEDBACK */}
                     <div className="card p-8">

@@ -100,10 +100,8 @@ Respond ONLY with valid JSON.`;
         //     "gemini-exp-1206"
         // ];
 
+        const errorLog: string[] = [];
         let analysis: any = null;
-        let lastErrorStr = "";
-
-        console.log("🚀 Starting generation (Direct REST API)...");
 
         for (const model of models) {
             try {
@@ -122,7 +120,7 @@ Respond ONLY with valid JSON.`;
                             }],
                             generationConfig: {
                                 responseMimeType: "application/json",
-                                temperature: 0,  // Deterministic output for consistent ATS scores
+                                temperature: 0,
                                 topP: 1,
                                 topK: 1
                             }
@@ -149,17 +147,16 @@ Respond ONLY with valid JSON.`;
 
             } catch (e: any) {
                 console.warn(`⚠️ Failed with ${model}: ${e.message}`);
-                lastErrorStr = e.message;
+                errorLog.push(`[${model}] ${e.message}`);
             }
         }
 
         if (!analysis) {
-            console.error("❌ All models failed:", lastErrorStr);
-            // Helpful error for user
+            console.error("❌ All models failed:", errorLog);
             return NextResponse.json({
-                error: `AI Error: ${lastErrorStr || "Failed to connect"}. Check console for details.`,
-                details: "Failed to generate content. " + lastErrorStr,
-                suggestion: "Please check your Google Gemini API Quota (likely exceeded) or Region availability."
+                error: "All AI models failed to generate content.",
+                details: errorLog.join("\n\n"),
+                suggestion: "Please check the 'details' to see why each model failed."
             }, { status: 500 });
         }
 
